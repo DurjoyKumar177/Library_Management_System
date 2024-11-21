@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Book, Borrow, Category
+from .models import Book, Borrow, Category, Review
 # Register your models here.
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('name',)}
@@ -8,3 +8,4 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Book)
 admin.site.register(Borrow)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Review)

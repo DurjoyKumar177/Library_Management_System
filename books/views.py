@@ -1,11 +1,13 @@
 from django.views.generic import ListView, DetailView
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from .models import Book, Borrow, Category
 from transactions.models import Transaction
-from transactions.constants import PAYMENT
+from transactions.constants import PAYMENT, REFUND
+from .forms import ReviewForm
+from django.utils.timezone import now
 
 
 # List all books
@@ -46,12 +48,18 @@ class BookDetailView(DetailView):
 @method_decorator(login_required, name='dispatch')
 class BorrowHistoryView(ListView):
     model = Borrow
-    template_name = 'profile.html'  
+    template_name = 'books/my_books.html'
     context_object_name = 'borrows'
 
     def get_queryset(self):
-        # Fetch borrow history only for the logged-in user
-        return Borrow.objects.filter(user=self.request.user)
+        # Fetch borrow history only for the logged-in user, ordered by the most recent borrow_date
+        return Borrow.objects.filter(user=self.request.user).order_by('-borrow_date')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add the current datetime for use with the `timesince` filter
+        context['current_time'] = now()
+        return context
 
 
 # Borrow a book if available
@@ -93,3 +101,47 @@ def borrow_book(request, book_id):
         messages.error(request, "Insufficient balance to borrow this book.")
 
     return redirect('book_list')
+
+@login_required
+def return_book(request, book_id):
+    borrow = get_object_or_404(Borrow, user=request.user, book_id=book_id, returned=False)
+    account = request.user.account
+
+    # Update the borrow record
+    borrow.returned = True
+    borrow.save()
+
+    # Refund the book price to the user's account
+    refund_amount = borrow.book.borrowprice
+    account.balance += refund_amount
+    account.save(update_fields=['balance'])
+
+    # Record the refund transaction
+    Transaction.objects.create(
+        account=account,
+        amount=refund_amount,
+        balance_after_transaction=account.balance,
+        transaction_type=REFUND
+    )
+
+    # Display a success message
+    messages.success(
+        request,
+        f'{refund_amount:.2f} $ was refunded to your account successfully.'
+    )
+
+    return redirect('book_history')
+
+@login_required
+def review_book(request, book_id):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.book_id = book_id
+            review.save()
+            return redirect('book_history')
+    else:
+        form = ReviewForm()
+    return render(request, 'books/review_book.html', {'form': form})
