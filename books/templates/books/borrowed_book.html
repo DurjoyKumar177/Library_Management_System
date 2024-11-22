@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto mt-6 bg-gray-100 p-4 rounded-lg">
+    <h1 class="text-center text-2xl font-bold mb-6">My Borrowed Books</h1>
+
+    <div class="grid grid-cols-2 gap-6">
+        {% for borrow in borrows %}
+        <div class="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden">
+            <!-- Book Image -->
+            {% if borrow.book.image %}
+            <img src="{{ borrow.book.image.url }}" alt="{{ borrow.book.title }}" class="w-full h-48 object-cover">
+            {% else %}
+            <img src="{% static 'book_placeholder.jpg' %}" alt="Placeholder Image" class="w-full h-48 object-cover">
+            {% endif %}
+
+            <div class="p-4">
+                <!-- Book Title -->
+                <h5 class="text-lg font-bold mb-2">
+                    <a href="{% url 'book_details' borrow.book.id %}" class="text-gray-800 hover:text-blue-600 transition">
+                        {{ borrow.book.title }}
+                    </a>
+                </h5>
+                
+                <!-- Borrowed Price -->
+                <p><strong>Borrowed Price:</strong> BDT {{ borrow.book.borrowprice }}</p>
+                
+                <!-- Borrow Date -->
+                <p><strong>Borrowed On:</strong> {{ borrow.borrow_date|date:"Y-m-d H:i" }}</p>
+                
+                <!-- Return Status -->
+                <p>
+                    <strong>Status:</strong>
+                    {% if borrow.returned %}
+                    <span class="text-green-600 font-semibold">Returned</span>
+                    {% else %}
+                    <span class="text-red-600 font-semibold">Not Returned</span>
+                    {% endif %}
+                </p>
+
+                <!-- Give Review Button -->
+                {% if borrow.returned %}
+                <a href="{% url 'review_book' borrow.book.id %}" class="block w-full mt-3 bg-blue-500 text-white py-2 px-4 rounded text-center hover:bg-blue-600 transition">
+                    Give Review
+                </a>
+                {% else %}
+                <p class="text-gray-500 text-sm mt-3">Return the book to leave a review.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-2">
+            <p class="text-center text-gray-500">You haven't borrowed any books yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

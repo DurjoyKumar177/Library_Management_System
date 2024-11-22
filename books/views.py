@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from .models import Book, Borrow, Category
@@ -66,8 +67,13 @@ class BorrowHistoryView(ListView):
 @login_required
 def borrow_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
-    user_account = request.user.account  
-    
+    user_account = request.user.account
+
+    # Check if the user has already borrowed this book and hasn't returned it
+    if Borrow.objects.filter(user=request.user, book=book, returned=False).exists():
+        messages.error(request, f"You have already borrowed '{book.title}'. Check your 'My Books' for details.")
+        return redirect('book_list')
+
     # Check if the user has enough balance
     if user_account.balance >= book.borrowprice:
         if book.quantity > 0:
@@ -102,6 +108,7 @@ def borrow_book(request, book_id):
 
     return redirect('book_list')
 
+
 @login_required
 def return_book(request, book_id):
     borrow = get_object_or_404(Borrow, user=request.user, book_id=book_id, returned=False)
@@ -110,6 +117,11 @@ def return_book(request, book_id):
     # Update the borrow record
     borrow.returned = True
     borrow.save()
+
+    # Increment the book quantity
+    book = borrow.book
+    book.quantity += 1
+    book.save()
 
     # Refund the book price to the user's account
     refund_amount = borrow.book.borrowprice
@@ -132,6 +144,7 @@ def return_book(request, book_id):
 
     return redirect('book_history')
 
+
 @login_required
 def review_book(request, book_id):
     if request.method == 'POST':
@@ -145,3 +158,12 @@ def review_book(request, book_id):
     else:
         form = ReviewForm()
     return render(request, 'books/review_book.html', {'form': form})
+
+class MyBookView(LoginRequiredMixin, ListView):
+    model = Borrow
+    template_name = 'books/my_books.html'
+    context_object_name = 'borrows'
+
+    def get_queryset(self):
+        # Fetch only the books borrowed by the logged-in user
+        return Borrow.objects.filter(user=self.request.user).order_by('-borrow_date')

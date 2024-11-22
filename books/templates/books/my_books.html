@@ -2,43 +2,63 @@
 
 {% block content %}
 <div class="container mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-4">My Borrowed Books</h1>
-    <table class="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="border border-gray-300 px-4 py-2">Book ID</th>
-                <th class="border border-gray-300 px-4 py-2">Title</th>
-                <th class="border border-gray-300 px-4 py-2">Price</th>
-                <th class="border border-gray-300 px-4 py-2">Borrow Date</th>
-                <th class="border border-gray-300 px-4 py-2">Day Count</th>
-                <th class="border border-gray-300 px-4 py-2">Return</th>
-                <th class="border border-gray-300 px-4 py-2">Review</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for borrow in borrows %}
-            <tr>
-                <td class="border border-gray-300 px-4 py-2">{{ borrow.book.id }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ borrow.book.title }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ borrow.book.borrowprice }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ borrow.borrow_date|date:"Y-m-d H:i" }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ borrow.borrow_date|timesince:current_time }}</td>
-                <td class="border border-gray-300 px-4 py-2">
-                    {% if borrow.returned %}
-                    <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Returned</button>
-                    {% else %}
-                    <form action="{% url 'return_book' borrow.book.id %}" method="POST">
-                        {% csrf_token %}
-                        <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded" type="submit">Return</button>
-                    </form>
-                    {% endif %}
-                </td>
-                <td class="border border-gray-300 px-4 py-2">
-                    <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Review</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-6">
+        <!-- User Details on the Left -->
+        <div>
+            <h1 class="text-2xl font-bold">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h1>
+            <a href="{% url 'profile' %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mt-2 inline-block">
+                Update Profile
+            </a>
+        </div>
+        <!-- Account Details on the Right -->
+        <div class="text-right">
+            <h3 class="text-lg font-semibold">Account Details</h3>
+            <p class="text-gray-700">Account No: <span class="font-medium">{{ request.user.account.account_no }}</span></p>
+            <p class="text-gray-700">Balance: <span class="font-medium">{{ request.user.account.balance }}</span></p>
+        </div>
+    </div>
+
+    <!-- Borrowed Books Section -->
+    <div class="mt-10">
+        <h2 class="text-3xl font-bold mb-4 text-center">Borrowed Book History</h2>
+        <table class="table-auto w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">Book ID</th>
+                    <th class="border border-gray-300 px-4 py-2">Title</th>
+                    <th class="border border-gray-300 px-4 py-2">Price</th>
+                    <th class="border border-gray-300 px-4 py-2">Borrow Date</th>
+                    <th class="border border-gray-300 px-4 py-2">Day Count</th>
+                    <th class="border border-gray-300 px-4 py-2">Return</th>
+                    <th class="border border-gray-300 px-4 py-2">Review</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrow in borrows %}
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2">{{ borrow.book.id }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ borrow.book.title }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ borrow.book.borrowprice }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ borrow.borrow_date|date:"Y-m-d H:i" }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ borrow.borrow_date|timesince:current_time }}</td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        {% if borrow.returned %}
+                        <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Returned</button>
+                        {% else %}
+                        <form action="{% url 'return_book' borrow.book.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded" type="submit">Return</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                    <td class="border border-gray-300 px-4 py-2">
+                        <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Review</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}
