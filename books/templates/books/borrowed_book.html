@@ -5,7 +5,8 @@
 <div class="container mx-auto mt-6 bg-gray-100 p-4 rounded-lg">
     <h1 class="text-center text-2xl font-bold mb-6">My Borrowed Books</h1>
 
-    <div class="grid grid-cols-2 gap-6">
+    <!-- Grid for displaying books -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {% for borrow in borrows %}
         <div class="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden">
             <!-- Book Image -->
@@ -23,34 +24,37 @@
                     </a>
                 </h5>
                 
+                <!-- Book Category -->
+                <p>
+                    <span class="text-gray-700 font-medium">Category:</span>
+                    <button class="bg-gray-300 text-gray-600 py-1 px-2 rounded text-xs cursor-not-allowed">
+                        {{ borrow.book.category.name }}
+                    </button>
+                </p>
+
                 <!-- Borrowed Price -->
                 <p><strong>Borrowed Price:</strong> BDT {{ borrow.book.borrowprice }}</p>
                 
                 <!-- Borrow Date -->
                 <p><strong>Borrowed On:</strong> {{ borrow.borrow_date|date:"Y-m-d H:i" }}</p>
-                
+
                 <!-- Return Status -->
                 <p>
                     <strong>Status:</strong>
-                    {% if borrow.returned %}
-                    <span class="text-green-600 font-semibold">Returned</span>
-                    {% else %}
                     <span class="text-red-600 font-semibold">Not Returned</span>
-                    {% endif %}
                 </p>
 
-                <!-- Give Review Button -->
-                {% if borrow.returned %}
-                <a href="{% url 'review_book' borrow.book.id %}" class="block w-full mt-3 bg-blue-500 text-white py-2 px-4 rounded text-center hover:bg-blue-600 transition">
-                    Give Review
-                </a>
-                {% else %}
-                <p class="text-gray-500 text-sm mt-3">Return the book to leave a review.</p>
-                {% endif %}
+                <!-- Return Button -->
+                <form action="{% url 'return_book' borrow.book.id %}" method="POST" class="mt-3">
+                    {% csrf_token %}
+                    <button class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
+                        Return Book
+                    </button>
+                </form>
             </div>
         </div>
         {% empty %}
-        <div class="col-span-2">
+        <div class="col-span-4">
             <p class="text-center text-gray-500">You haven't borrowed any books yet.</p>
         </div>
         {% endfor %}

@@ -26,7 +26,7 @@ def send_transaction_email(user_account, subject, template):
 class UserRegistrationView(FormView):
     template_name = 'accounts/user_registration.html'
     form_class = UserRegistrationForm
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('update_profile')
     
     def form_valid(self,form):
         # print(form.cleaned_data)
@@ -46,7 +46,7 @@ class UserLogoutView(LogoutView):
         return reverse_lazy('home')
     
 class UserAccountUpdateView(View):
-    template_name = 'accounts/profile.html'
+    template_name = 'accounts/update_profile.html'
 
     def get(self, request):
         form = UserUpdateForm(instance=request.user)
@@ -56,7 +56,7 @@ class UserAccountUpdateView(View):
         form = UserUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # Redirect to the user's profile page
+            return redirect('update_profile')  # Redirect to the user's profile page
         return render(request, self.template_name, {'form': form})
     
 class PassChangeView(LoginRequiredMixin, View):
@@ -73,5 +73,5 @@ class PassChangeView(LoginRequiredMixin, View):
             
             send_transaction_email(request.user, 'Password Change Message', 'accounts/password_change_email.html')
             
-            return redirect('profile')  # Redirect to the profile page
+            return redirect('update_profile')  # Redirect to the profile page
         return render(request, 'accounts/passchange.html', {'form': form})

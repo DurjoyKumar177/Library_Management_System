@@ -49,7 +49,7 @@ class BookDetailView(DetailView):
 @method_decorator(login_required, name='dispatch')
 class BorrowHistoryView(ListView):
     model = Borrow
-    template_name = 'books/my_books.html'
+    template_name = 'books/profile.html'
     context_object_name = 'borrows'
 
     def get_queryset(self):
@@ -142,7 +142,7 @@ def return_book(request, book_id):
         f'{refund_amount:.2f} $ was refunded to your account successfully.'
     )
 
-    return redirect('book_history')
+    return redirect('profile')
 
 
 @login_required
@@ -154,16 +154,16 @@ def review_book(request, book_id):
             review.user = request.user
             review.book_id = book_id
             review.save()
-            return redirect('book_history')
+            return redirect('profile')
     else:
         form = ReviewForm()
     return render(request, 'books/review_book.html', {'form': form})
 
 class MyBookView(LoginRequiredMixin, ListView):
     model = Borrow
-    template_name = 'books/my_books.html'
+    template_name = 'books/borrowed_book.html'
     context_object_name = 'borrows'
 
     def get_queryset(self):
         # Fetch only the books borrowed by the logged-in user
-        return Borrow.objects.filter(user=self.request.user).order_by('-borrow_date')
+        return Borrow.objects.filter(user=self.request.user, returned=False).order_by('-borrow_date')
