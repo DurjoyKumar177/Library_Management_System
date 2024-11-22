@@ -9,6 +9,21 @@ from transactions.models import Transaction
 from transactions.constants import PAYMENT, REFUND
 from .forms import ReviewForm
 from django.utils.timezone import now
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+
+def send_transaction_email(user_account, book, subject, template):
+    user = user_account  # Assuming the passed object is a User object
+    message = render_to_string(template, {
+        'user': user,
+        'book': book,
+        'amount': book.borrowprice,  # Ensure the borrow price is passed
+        'title': book.title,         # Add the book title to the context
+    })
+    send_email = EmailMultiAlternatives(subject, '', to=[user.email])
+    send_email.attach_alternative(message, "text/html")
+    send_email.send()
 
 
 # List all books
@@ -98,6 +113,7 @@ def borrow_book(request, book_id):
 
             # Show success message and redirect to profile
             messages.success(request, f"You have successfully borrowed '{book.title}'.")
+            send_transaction_email(request.user, book, 'Book Borrow Confirmation', 'books/book_borrow_email.html')
             return redirect('profile')
         else:
             # Book is out of stock
@@ -141,6 +157,8 @@ def return_book(request, book_id):
         request,
         f'{refund_amount:.2f} $ was refunded to your account successfully.'
     )
+
+    send_transaction_email(request.user, borrow.book, 'Book Return Confirmation', 'books/book_return_email.html')
 
     return redirect('profile')
 

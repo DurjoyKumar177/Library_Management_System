@@ -1,7 +1,44 @@
-<h3>Hello {{ user.first_name }} {{ user.last_name }},</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 py-8">
+    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="p-6">
+            <!-- Header Section -->
+            <h3 class="text-xl font-semibold text-gray-800">
+                Hello, {{ user.first_name }} {{ user.last_name }},
+            </h3>
+            
+            <!-- Body Section -->
+            <p class="mt-4 text-gray-600">
+                Your withdrawal request for <span class="font-bold text-green-600">{{ amount }}$</span> 
+                has been successfully processed. After the withdrawal, your account balance is 
+                <span class="font-bold text-blue-600">{{ user.account.balance }}$</span>.
+            </p>
 
-<p>Your Withdrawal request for {{ amount }}$ has been successfully submitted to your account. After Withdrawal, your account balance is {{ user.account.balance }} $.</p>
-<p>Current balance: {{ user.account.balance }} $</p>
+            <p class="mt-2 text-gray-600">
+                Current balance: <span class="font-bold text-blue-600">{{ user.account.balance }}$</span>
+            </p>
 
-<p>Thank you for banking with us.</p>   
-<p>Amar Bank</p>
+            <p class="mt-4 text-gray-600">
+                If you did not initiate this transaction, please contact support immediately.
+            </p>
+
+            <!-- Footer Section -->
+            <div class="mt-6 border-t pt-4">
+                <p class="text-sm text-gray-500">
+                    Thank you for using our services.
+                </p>
+                <p class="mt-2 text-sm text-gray-500">
+                    &copy; {{ current_year }} <span class="font-semibold">BookHeaven Library</span>. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

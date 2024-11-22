@@ -27,22 +27,16 @@
                 <!-- Book Category -->
                 <p>
                     <span class="text-gray-700 font-medium">Category:</span>
-                    <button class="bg-gray-300 text-gray-600 py-1 px-2 rounded text-xs cursor-not-allowed">
+                    <button class="bg-gray-300 !text-rose-600 py-3 px-8 rounded text-xs cursor-not-allowed">
                         {{ borrow.book.category.name }}
                     </button>
                 </p>
-
+                
                 <!-- Borrowed Price -->
                 <p><strong>Borrowed Price:</strong> BDT {{ borrow.book.borrowprice }}</p>
                 
                 <!-- Borrow Date -->
                 <p><strong>Borrowed On:</strong> {{ borrow.borrow_date|date:"Y-m-d H:i" }}</p>
-
-                <!-- Return Status -->
-                <p>
-                    <strong>Status:</strong>
-                    <span class="text-red-600 font-semibold">Not Returned</span>
-                </p>
 
                 <!-- Return Button -->
                 <form action="{% url 'return_book' borrow.book.id %}" method="POST" class="mt-3">

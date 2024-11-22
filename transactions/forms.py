@@ -29,3 +29,23 @@ class DepositForm(TransactionForm):
             
         return amount
     
+class WinthdrawForm(TransactionForm):
+    
+    def clean_amount(self):
+        account = self.account
+        min_withdraw_amount = 500
+        balance = account.balance
+        amount = self.cleaned_data.get('amount')
+        if amount < min_withdraw_amount:
+            raise forms.ValidationError(
+                f'You can withdraw at least {min_withdraw_amount} $'
+            )
+            
+            
+        if amount > balance:
+            raise forms.ValidationError(
+                f'You have {balance} $ in your account. '
+                f'You can not withdrow more than your account balance '
+            )
+        return amount
+    

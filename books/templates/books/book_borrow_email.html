@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Borrow Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 py-8">
+    <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800">
+            Dear {{ user.first_name }} {{ user.last_name }},
+        </h2>
+
+        <p class="mt-4 text-gray-600">
+            You have successfully borrowed the book 
+            <span class="font-bold text-blue-600">{{ title }}</span>. 
+            The borrowing fee of 
+            <span class="font-bold text-green-600">BDT {{ amount }}</span> 
+            has been debited from your account.
+        </p>
+
+        <p class="mt-4 text-gray-600">
+            If you did not initiate this transaction, please contact our support team immediately for assistance.
+        </p>
+
+        <p class="mt-6 font-semibold text-gray-800">Details:</p>
+        <ul class="list-disc list-inside text-gray-600">
+            <li><strong>Book Title:</strong> {{ title }}</li>
+            <li><strong>Price:</strong> BDT {{ amount }}</li>
+        </ul>
+
+        <p class="mt-6 text-gray-600">
+            Please note:
+        </p>
+        <ul class="list-disc list-inside text-gray-600">
+            <li>You will be able to return the book 24 hours after borrowing.</li>
+            <li>We encourage you to leave a review and rating for the book once you’ve returned it.</li>
+        </ul>
+
+        <p class="mt-6 text-gray-600">
+            Thank you for using our services. Happy reading!
+        </p>
+
+        <div class="mt-8 text-center text-sm text-gray-500">
+            <p>&copy; {{ current_year }} BookHeaven Library. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

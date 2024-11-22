@@ -18,6 +18,9 @@
                 <a href="{% url 'report' %}" class="block mt-4 lg:inline-block lg:mt-0 text-blue-900 hover:text-red-900 hover:font-black mr-4">
                     Transactions
                 </a>
+                <a href="{% url 'withdraw' %}" class="block mt-4 lg:inline-block lg:mt-0 text-blue-900 hover:text-red-900 hover:font-black mr-4">
+                    Withdraw
+                </a>
             </div>
             <div class="flex w-auto">
                 <div class="text-blue-900 my-auto font-black px-5">Welcome, {{ request.user.first_name }} (balance : {{request.user.account.balance}}) </div>
