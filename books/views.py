@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib import messages
-from .models import Book, Borrow, Category
+from .models import Book, Borrow, Category, Review
 from transactions.models import Transaction
 from transactions.constants import PAYMENT, REFUND
 from .forms import ReviewForm
@@ -52,12 +52,19 @@ class BookListView(ListView):
 # Display details of a specific book
 class BookDetailView(DetailView):
     model = Book
-    template_name = 'books/book_details.html'  # Updated the template name to match conventions
+    template_name = 'books/book_details.html'
     context_object_name = 'book'
 
     def get_object(self):
         # Fetch the book using the primary key from the URL
         return get_object_or_404(Book, pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        # Extend context with reviews
+        context = super().get_context_data(**kwargs)
+        book = self.get_object()
+        context['reviews'] = Review.objects.filter(book=book).order_by('-id')  # Fetch and order reviews
+        return context
 
 
 # Show borrow history of the logged-in user

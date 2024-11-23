@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="db.sqlite3" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3215"/><column_width id="4" width="0"/><expanded_item id="8" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="accounts_useraccount" custom_title="0" dock_id="1" table="4,20:mainaccounts_useraccount"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">UPDATE books_book 
+SET description = 'মানিক বন্দ্যোপাধ্যায়ের লেখা কালজয়ী উপন্যাস, যা পদ্মা নদীর মানুষের দৈনন্দিন জীবন এবং সংগ্রামের ছবি তুলে ধরে। এর চরিত্ররা জীবনের গভীরতা এবং নদীর উপর নির্ভরশীলতার গল্প বলে।'
+WHERE title = 'পদ্মা নদীর মাঝি';
+
+UPDATE books_book 
+SET description = 'রবীন্দ্রনাথ ঠাকুরের বিখ্যাত কাব্যগ্রন্থ &quot;সোনার তরী&quot; প্রেম, প্রকৃতি, এবং জীবনের গভীর দার্শনিক ভাবনার প্রতিচ্ছবি। প্রতিটি কবিতায় মানসিক প্রশান্তি এবং সৃজনশীলতা খুঁজে পাওয়া যায়।'
+WHERE title = 'সোনার তরী';
+
+UPDATE books_book 
+SET description = 'বিভূতিভূষণ বন্দ্যোপাধ্যায়ের চাঁদের পাহাড় রোমাঞ্চ ও সাহসিকতার এক অসাধারণ উপন্যাস। এটি আফ্রিকার দুঃসাহসিক অভিযাত্রার গল্প, যেখানে প্রকৃতি এবং বিপদের মুখোমুখি হওয়া হয়েছে।'
+WHERE title = 'চাঁদের পাহাড়';
+
+UPDATE books_book 
+SET description = 'বিভূতিভূষণ বন্দ্যোপাধ্যায়ের &quot;আরণ্যক&quot; গ্রামীণ জীবনের গভীরতা এবং প্রকৃতির অপার সৌন্দর্য তুলে ধরেছে। গ্রামবাংলার পরিবেশের সঙ্গে মানুষের আন্তরিক সম্পর্ক এখানে চমৎকারভাবে বর্ণিত।'
+WHERE title = 'আরণ্যক';
+
+UPDATE books_book 
+SET description = 'শরৎচন্দ্র চট্টোপাধ্যায়ের &quot;দেবদাস&quot; একটি হৃদয়বিদারক প্রেমের উপন্যাস। এতে সমাজের বাধা এবং মানসিক সংকটের সঙ্গে প্রেমের অন্তর্দন্দ্বের গভীর প্রতিফলন দেখা যায়।'
+WHERE title = 'দেবদাস';
+
+UPDATE books_book 
+SET description = 'জহির রায়হানের কালজয়ী উপন্যাস &quot;হাজার বছর ধরে&quot;। গ্রামীণ বাঙালির জীবনের টানাপোড়েন, সংস্কৃতি ও ঐতিহ্যের গল্প এই উপন্যাসে গভীরভাবে চিত্রিত।'
+WHERE title = 'হাজার বছর ধরে';
+
+UPDATE books_book 
+SET description = 'সৈয়দ ওয়ালিউল্লাহ্‌র &quot;লালসালু&quot; একটি গভীর সামাজিক উপন্যাস। এতে ধর্মীয় পৃষ্ঠপোষকতা এবং গ্রামীণ জীবনের চ্যালেঞ্জের চিত্র তুলে ধরা হয়েছে।'
+WHERE title = 'লালসালু';
+
+UPDATE books_book 
+SET description = 'হুমায়ূন আহমেদের ফ্যান্টাসি গল্প &quot;অলৌকিক জলপরি&quot; বাচ্চাদের কল্পনার রাজ্যে নিয়ে যায়। গল্পটি শিশু-কিশোরদের জন্য হাসি এবং রহস্যে ভরা।'
+WHERE title = 'অলৌকিক জলপরি';
+
+UPDATE books_book 
+SET description = 'হুমায়ূন আহমেদের প্রথম উপন্যাস &quot;নন্দিত নরকে&quot;। এটি মানসিক সমস্যার গভীরতা এবং পরিবারের সম্পর্কের জটিলতা তুলে ধরে।'
+WHERE title = 'নন্দিত নরকে';
+
+UPDATE books_book 
+SET description = 'সেলিনা হোসেনের &quot;তিথিডোর&quot; সামাজিক বাস্তবতা এবং নারীর সংগ্রামের একটি চমৎকার উপন্যাস। এতে জীবন এবং সামাজিক দায়বদ্ধতার গভীর বিশ্লেষণ দেখা যায়।'
+WHERE title = 'তিথিডোর';
+
+UPDATE books_book 
+SET description = 'রবীন্দ্রনাথ ঠাকুরের ছোট গল্প &quot;কাবুলিওয়ালা&quot; মানবতার একটি অসাধারণ চিত্র। এটি এক আফগানি বিক্রেতার সঙ্গে এক ছোট মেয়ের হৃদয়গ্রাহী বন্ধুত্বের গল্প।'
+WHERE title = 'কাবুলিওয়ালা';
+
+UPDATE books_book 
+SET description = 'সেলিনা হোসেনের &quot;আমাদের শহর&quot; সামাজিক সমস্যাগুলির বাস্তব চিত্র তুলে ধরে। এতে শহুরে জীবনের সমস্যাগুলো গভীরভাবে তুলে ধরা হয়েছে।'
+WHERE title = 'আমাদের শহর';
+
+UPDATE books_book 
+SET description = 'মুনীর চৌধুরীর &quot;আলোর পথযাত্রী&quot; নাটকটি জীবন এবং আত্মত্যাগের গভীর তাৎপর্য প্রকাশ করে। এটি মানুষের আত্মত্যাগ এবং সমাজের প্রতি দায়িত্বের কথা বলে।'
+WHERE title = 'আলোর পথযাত্রী';
+
+UPDATE books_book 
+SET description = 'রবীন্দ্রনাথ ঠাকুরের &quot;গল্পগুচ্ছ&quot; তাঁর সেরা ছোটগল্পগুলির সংকলন। এতে মানুষের বিভিন্ন অভিজ্ঞতা এবং সম্পর্কের গভীরতাকে তুলে ধরা হয়েছে।'
+WHERE title = 'গল্পগুচ্ছ';
+
+UPDATE books_book 
+SET description = 'সুনীল গঙ্গোপাধ্যায়ের &quot;মেঘের উপর বাড়ি&quot; কাব্যগ্রন্থটি প্রেম, প্রকৃতি এবং কল্পনার রাজ্যকে তুলে ধরে। এটি মননশীল পাঠকদের জন্য উপভোগ্য।'
+WHERE title = 'মেঘের উপর বাড়ি';
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

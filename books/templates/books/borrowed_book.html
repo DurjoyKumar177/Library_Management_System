@@ -10,16 +10,18 @@
         {% for borrow in borrows %}
         <div class="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden">
             <!-- Book Image -->
-            {% if borrow.book.image %}
-            <img src="{{ borrow.book.image.url }}" alt="{{ borrow.book.title }}" class="w-full h-48 object-cover">
-            {% else %}
-            <img src="{% static 'book_placeholder.jpg' %}" alt="Placeholder Image" class="w-full h-48 object-cover">
-            {% endif %}
+            <a href="{% url 'book_details' borrow.book.id %}">
+                {% if borrow.book.image %}
+                <img src="{{ borrow.book.image.url }}" alt="{{ borrow.book.title }}" class="w-full h-48 object-cover">
+                {% else %}
+                <img src="{% static 'book_placeholder.jpg' %}" alt="Placeholder Image" class="w-full h-48 object-cover">
+                {% endif %}
+            </a>
 
             <div class="p-4">
                 <!-- Book Title -->
                 <h5 class="text-lg font-bold mb-2">
-                    <a href="{% url 'book_details' borrow.book.id %}" class="text-gray-800 hover:text-blue-600 transition">
+                    <a href="{% url 'book_details' borrow.book.id %}" class="text-blue-600 hover:underline">
                         {{ borrow.book.title }}
                     </a>
                 </h5>
@@ -37,6 +39,9 @@
                 
                 <!-- Borrow Date -->
                 <p><strong>Borrowed On:</strong> {{ borrow.borrow_date|date:"Y-m-d H:i" }}</p>
+                <div class="border border-gray-300 px-4 py-2">
+                    <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Give Review</a>
+                </div>
 
                 <!-- Return Button -->
                 <form action="{% url 'return_book' borrow.book.id %}" method="POST" class="mt-3">

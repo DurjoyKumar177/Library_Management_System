@@ -12,12 +12,30 @@
 
         {% block head_extra %}{% endblock %}
         <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh; /* Ensure the body takes up the full viewport height */
+            }
+            
+            main {
+                flex: 1; /* Ensures the main content takes up remaining space */
+            }
+            
             footer {
-                position: fixed !important;
-                bottom: 0 !important;
                 width: 100%;
+                background-color: #333; /* Footer background color */
+                color: white; /* Footer text color */
+                text-align: center;
+                padding: 10px 0;
             }
         </style>
+        
     </head>
     <body class="bg-orange-300">
         {% include 'navbar.html' %}

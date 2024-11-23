@@ -1,12 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto mt-10">
-    <h1 class="text-2xl font-bold mb-4">Review Book</h1>
-    <form method="POST">
+<div class="container mx-auto mt-10 bg-gray-100 p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Review Book</h1>
+    <form method="POST" class="space-y-6">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded" type="submit">Submit Review</button>
+        
+        <!-- Render the form fields with proper spacing -->
+        <div>
+            {{ form.rating.label_tag }}
+            {{ form.rating }}
+        </div>
+        
+        <div class="mt-4">
+            {{ form.comment.label_tag }}
+            {{ form.comment }}
+        </div>
+        
+        <!-- Submit button -->
+        <div>
+            <button 
+                class="bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 rounded-lg w-full md:w-auto" 
+                type="submit">
+                Submit Review
+            </button>
+        </div>
     </form>
 </div>
 {% endblock %}

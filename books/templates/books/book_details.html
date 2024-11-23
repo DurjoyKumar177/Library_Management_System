@@ -14,65 +14,77 @@
 
         <!-- Book Details -->
         <div class="bg-white p-6 rounded-lg shadow-lg md:w-1/2 w-full">
-            <!-- Category Button -->
-            <button 
-                class="bg-blue-200 text-blue-800 px-4 py-2 rounded-lg cursor-not-allowed mb-4"
-                disabled>
+            <button class="bg-blue-200 text-blue-800 px-4 py-2 rounded-lg cursor-not-allowed mb-4" disabled>
                 {{ book.catagory.name }}
             </button>
-
-            <!-- Book Information -->
             <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ book.title }}</h2>
             <p class="mb-2 text-lg">
                 <strong>Borrow Price:</strong> 
                 <span class="text-green-600 font-semibold">BDT {{ book.borrowprice }}</span>
             </p>
             <p class="mb-2 text-lg">
-              <strong>Quantity:</strong> 
-              <span class="{% if book.quantity > 0 %}text-green-600{% else %}text-red-600{% endif %}">
-                  {{ book.quantity }}
-              </span>
-          </p>
+                <strong>Quantity:</strong> 
+                <span class="{% if book.quantity > 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                    {{ book.quantity }}
+                </span>
+            </p>
             <p class="mb-4 text-lg">
                 <strong>Description:</strong>
                 <br>{{ book.description }}
             </p>
 
-            <!-- Borrow Button -->
-            <div class="mt-4">
-                {% if request.GET.source == "profile" %}
-                <form method="POST" action="{% url 'borrow_book' book.id %}">
-                    {% csrf_token %}
-                    {% if book.quantity > 0 %}
-                    <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition">
-                        Borrow Again
-                    </button>
-                    {% else %}
+            <!-- Borrow or Review Button -->
+            {% if request.user.is_authenticated %}
+                {% if user_has_borrowed %}
+                    <!-- Review Button -->
+                    <form action="{% url 'review_book' book.id %}" method="GET">
+                        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition">
+                            Write a Review
+                        </button>
+                    </form>
+                {% elif book.quantity > 0 %}
+                    <!-- Borrow Button -->
+                    <form action="{% url 'borrow_book' book.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition">
+                            Borrow Now
+                        </button>
+                    </form>
+                {% else %}
+                    <!-- Out of Stock -->
                     <button class="w-full bg-gray-300 text-gray-600 py-2 px-4 rounded-lg cursor-not-allowed" disabled>
                         Out of Stock
                     </button>
-                    {% endif %}
-                </form>
-                {% else %}
-                {% if request.user.is_authenticated %}
-                <form action="{% url 'borrow_book' book.id %}" method="POST">
-                    {% csrf_token %}
-                    {% if book.quantity > 0 %}
-                    <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition">
-                        Borrow Now
-                    </button>
-                    {% else %}
-                    <button class="w-full bg-gray-300 text-gray-600 py-2 px-4 rounded-lg cursor-not-allowed" disabled>
-                        Out of Stock
-                    </button>
-                    {% endif %}
-                </form>
-                {% else %}
+                {% endif %}
+            {% else %}
                 <p class="text-red-500 font-semibold mt-4">Login to borrow this book.</p>
-                {% endif %}
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="mt-8">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Reviews</h3>
+        
+        {% if reviews %}
+        <div class="space-y-4">
+            {% for review in reviews %}
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <p class="text-gray-700 font-bold">{{ review.user.username }}</p>
+                    <span class="text-yellow-500 font-semibold">
+                        {% for _ in "1"|ljust:review.rating %}
+                        ⭐
+                        {% endfor %}
+                    </span>
+                </div>
+                <p class="text-gray-600 mt-2">{{ review.comment }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500">No reviews yet. Be the first to review this book!</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
