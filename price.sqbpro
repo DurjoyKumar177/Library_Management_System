@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="db.sqlite3" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3215"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="accounts_useraccount" custom_title="0" dock_id="1" table="4,20:mainaccounts_useraccount"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011800ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">UPDATE books_book
+SET borrowprice = CASE 
+    WHEN title = 'পদ্মা নদীর মাঝি' THEN 150.00
+    WHEN title = 'সোনার তরী' THEN 160.00
+    WHEN title = 'চাঁদের পাহাড়' THEN 170.00
+    WHEN title = 'আরণ্যক' THEN 180.00
+    WHEN title = 'দেবদাস' THEN 190.00
+    WHEN title = 'হাজার বছর ধরে' THEN 200.00
+    WHEN title = 'লালসালু' THEN 210.00
+    WHEN title = 'অলৌকিক জলপরি' THEN 220.00
+    WHEN title = 'নন্দিত নরকে' THEN 230.00
+    WHEN title = 'তিথিডোর' THEN 240.00
+    WHEN title = 'কাবুলিওয়ালা' THEN 250.00
+    WHEN title = 'আমাদের শহর' THEN 260.00
+    WHEN title = 'আলোর পথযাত্রী' THEN 270.00
+    WHEN title = 'গল্পগুচ্ছ' THEN 280.00
+    WHEN title = 'মেঘের উপর বাড়ি' THEN 290.00
+END;
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

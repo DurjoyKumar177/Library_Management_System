@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v6nht0n=k0x1l=wr_4trt1p4rizc6xd8^+o+rdo1+u2hm-fe#j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['https://bookheaven-itco.onrender.com', 'http://127.0.0.1']

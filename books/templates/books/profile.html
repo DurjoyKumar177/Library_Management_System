@@ -18,7 +18,7 @@
         <div class="bg-gradient-to-br from-green-500 via-teal-500 to-blue-500 shadow-lg rounded-lg p-6 text-white">
             <h2 class="text-xl font-bold mb-4">Account Details</h2>
             <p class="mb-2"><strong>Account Number:</strong> {{ request.user.account.account_no }}</p>
-            <p><strong>Current Balance:</strong> BDT {{ request.user.account.balance }}</p>
+            <p><strong>Current Balance:</strong> {{ request.user.account.balance }} BDT</p>
         </div>
     </div>
 
