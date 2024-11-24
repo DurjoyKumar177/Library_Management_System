@@ -132,7 +132,7 @@ def borrow_book(request, book_id):
             # Show success message and redirect to profile
             messages.success(request, f"You have successfully borrowed '{book.title}'.")
             send_transaction_email(request.user, book, 'Book Borrow Confirmation', 'books/book_borrow_email.html')
-            return redirect('profile')
+            return redirect('my_books')
         else:
             # Book is out of stock
             messages.error(request, f"'{book.title}' is currently unavailable.")
@@ -190,7 +190,7 @@ def review_book(request, book_id):
             review.user = request.user
             review.book_id = book_id
             review.save()
-            return redirect('profile')
+            return redirect('book_details', pk=book_id)
     else:
         form = ReviewForm()
     return render(request, 'books/review_book.html', {'form': form})
