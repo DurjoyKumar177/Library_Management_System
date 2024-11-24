@@ -65,8 +65,15 @@ class BookDetailView(DetailView):
         book = self.get_object()
         context['reviews'] = Review.objects.filter(book=book).order_by('-id')  # Fetch and order reviews
 
-        # Check if the user has already borrowed this book
-        context['user_has_borrowed'] = Borrow.objects.filter(user=self.request.user, book=book, returned=False).exists()
+        # Check if the user is authenticated before querying Borrow
+        if self.request.user.is_authenticated:
+            # Only show borrowed status for authenticated users
+            context['user_has_borrowed'] = Borrow.objects.filter(
+                user=self.request.user, book=book, returned=False
+            ).exists()
+        else:
+            # Set borrowed status to False for unauthenticated users
+            context['user_has_borrowed'] = False
         
         return context
 
