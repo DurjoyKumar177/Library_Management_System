@@ -2,59 +2,64 @@
 {% load static %}
 
 {% block content %}
-<div class="container mx-auto mt-6 bg-gray-100 p-4 rounded-lg">
-    <h1 class="text-center text-2xl font-bold mb-6">My Borrowed Books</h1>
+<div class="container mx-auto mt-8 bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-center text-3xl font-semibold mb-8 text-gray-800">My Borrowed Books</h1>
 
     <!-- Grid for displaying books -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {% for borrow in borrows %}
-        <div class="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden">
+        <div class="bg-white shadow-lg border border-gray-200 rounded-lg overflow-hidden transform transition-transform hover:scale-105">
             <!-- Book Image -->
             <a href="{% url 'book_details' borrow.book.id %}">
                 {% if borrow.book.image %}
-                <img src="{{ borrow.book.image.url }}" alt="{{ borrow.book.title }}" class="w-full h-48 object-cover">
+                <img src="{{ borrow.book.image.url }}" alt="{{ borrow.book.title }}" class="w-full h-48 object-cover rounded-t-lg">
                 {% else %}
-                <img src="{% static 'book_placeholder.jpg' %}" alt="Placeholder Image" class="w-full h-48 object-cover">
+                <img src="{% static 'book_placeholder.jpg' %}" alt="Placeholder Image" class="w-full h-48 object-cover rounded-t-lg">
                 {% endif %}
             </a>
 
-            <div class="p-4">
+            <div class="p-6">
                 <!-- Book Title -->
-                <h5 class="text-lg font-bold mb-2">
+                <h5 class="text-xl font-semibold text-gray-800 mb-3">
                     <a href="{% url 'book_details' borrow.book.id %}" class="text-blue-600 hover:underline">
                         {{ borrow.book.title }}
                     </a>
                 </h5>
                 
                 <!-- Book Category -->
-                <p>
-                    <span class="text-gray-700 font-medium">Category:</span>
-                    <button class="bg-gray-300 !text-rose-600 py-3 px-8 rounded text-xs cursor-not-allowed">
-                        {{ borrow.book.category.name }}
-                    </button>
+                <p class="mb-4">
+                    <span class="text-gray-600 font-medium">Category:</span>
+                    <span class="bg-blue-100 text-blue-800 py-1 px-3 rounded-full text-xs">
+                        {{ borrow.book.catagory.name }}
+                    </span>
                 </p>
                 
                 <!-- Borrowed Price -->
-                <p><strong>Borrowed Price:</strong> BDT {{ borrow.book.borrowprice }}</p>
+                <p class="text-lg text-gray-800"><strong>Borrowed Price:</strong> BDT {{ borrow.book.borrowprice }}</p>
                 
                 <!-- Borrow Date -->
-                <p><strong>Borrowed On:</strong> {{ borrow.borrow_date|date:"Y-m-d H:i" }}</p>
-                <div class="border border-gray-300 px-4 py-2">
-                    <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Give Review</a>
-                </div>
+                <p class="text-gray-600"><strong>Borrowed On:</strong> {{ borrow.borrow_date|date:"Y-m-d H:i" }}</p>
+                
+                <!-- Buttons Section -->
+                <div class="flex justify-between gap-4 mt-6">
+                    <!-- Review Button -->
+                    <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-5 py-3 rounded-full text-sm transition duration-300">
+                        Give Review
+                    </a>
 
-                <!-- Return Button -->
-                <form action="{% url 'return_book' borrow.book.id %}" method="POST" class="mt-3">
-                    {% csrf_token %}
-                    <button class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition">
-                        Return Book
-                    </button>
-                </form>
+                    <!-- Return Button -->
+                    <form action="{% url 'return_book' borrow.book.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="bg-red-500 text-white px-5 py-3 rounded-full text-sm hover:bg-red-600 transition duration-300">
+                            Return Book
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         {% empty %}
         <div class="col-span-4">
-            <p class="text-center text-gray-500">You haven't borrowed any books yet.</p>
+            <p class="text-center text-gray-500 text-lg">You haven't borrowed any books yet.</p>
         </div>
         {% endfor %}
     </div>

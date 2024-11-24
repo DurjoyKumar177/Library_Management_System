@@ -14,10 +14,13 @@
 
         <!-- Book Details -->
         <div class="bg-white p-6 rounded-lg shadow-lg md:w-1/2 w-full">
+            <!-- Category -->
             <button class="bg-blue-200 text-blue-800 px-4 py-2 rounded-lg cursor-not-allowed mb-4" disabled>
                 {{ book.catagory.name }}
             </button>
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">{{ book.title }}</h2>
+            
+            <!-- Title and Info -->
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">{{ book.title }}</h2>
             <p class="mb-2 text-lg">
                 <strong>Borrow Price:</strong> 
                 <span class="text-green-600 font-semibold">BDT {{ book.borrowprice }}</span>
@@ -36,6 +39,11 @@
             <!-- Borrow or Review Button -->
             {% if request.user.is_authenticated %}
                 {% if user_has_borrowed %}
+                    <!-- Borrowed Button (Disabled) -->
+                    <button class="w-full bg-gray-300 text-gray-600 py-2 px-4 rounded-lg cursor-not-allowed mb-4">
+                        Already Borrowed
+                    </button>
+
                     <!-- Review Button -->
                     <form action="{% url 'review_book' book.id %}" method="GET">
                         <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition">
@@ -59,32 +67,31 @@
             {% else %}
                 <p class="text-red-500 font-semibold mt-4">Login to borrow this book.</p>
             {% endif %}
-        </div>
-    </div>
 
-    <!-- Reviews Section -->
-    <div class="mt-8">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Reviews</h3>
-        
-        {% if reviews %}
-        <div class="space-y-4">
-            {% for review in reviews %}
-            <div class="bg-white p-4 rounded-lg shadow">
-                <div class="flex items-center justify-between">
-                    <p class="text-gray-700 font-bold">{{ review.user.username }}</p>
-                    <span class="text-yellow-500 font-semibold">
-                        {% for _ in "1"|ljust:review.rating %}
-                        ⭐
-                        {% endfor %}
-                    </span>
+            <!-- Reviews Section -->
+            <div class="mt-6 bg-gray-50 p-4 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Reviews</h3>
+                {% if reviews %}
+                <div class="space-y-4">
+                    {% for review in reviews %}
+                    <div class="bg-white p-4 rounded-lg shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <p class="text-gray-700 font-semibold">{{ review.user.username }}</p>
+                            <div class="text-yellow-500">
+                                {% for _ in "1"|ljust:review.rating %}
+                                ⭐
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-2">{{ review.comment }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                <p class="text-gray-600 mt-2">{{ review.comment }}</p>
+                {% else %}
+                <p class="text-gray-500">No reviews yet. Be the first to review this book!</p>
+                {% endif %}
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-        <p class="text-gray-500">No reviews yet. Be the first to review this book!</p>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

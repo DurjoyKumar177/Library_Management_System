@@ -60,10 +60,14 @@ class BookDetailView(DetailView):
         return get_object_or_404(Book, pk=self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
-        # Extend context with reviews
+        # Extend context with reviews and borrowed status
         context = super().get_context_data(**kwargs)
         book = self.get_object()
         context['reviews'] = Review.objects.filter(book=book).order_by('-id')  # Fetch and order reviews
+
+        # Check if the user has already borrowed this book
+        context['user_has_borrowed'] = Borrow.objects.filter(user=self.request.user, book=book, returned=False).exists()
+        
         return context
 
 
