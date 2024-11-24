@@ -2,29 +2,32 @@
 
 {% block content %}
 <div class="container mx-auto mt-10">
-    <!-- Header Section -->
-    <div class="flex justify-between items-center mb-6">
-        <!-- User Details on the Left -->
-        <div>
-            <h1 class="text-2xl font-bold">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-            <a href="{% url 'update_profile' %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mt-2 inline-block">
+    <!-- Header Section with Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <!-- User Details Card -->
+        <div class="bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 shadow-lg rounded-lg p-6 text-white">
+            <h2 class="text-xl font-bold mb-4">Username: {{ request.user.username }}</h2>
+            <p class="mb-2"><strong>Full Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+            <p class="mb-4"><strong>Email:</strong> {{ request.user.email }}</p>
+            <a href="{% url 'update_profile' %}" class="block bg-white text-blue-600 font-semibold px-4 py-2 rounded text-center hover:bg-gray-100 transition">
                 Update Profile
             </a>
         </div>
-        <!-- Account Details on the Right -->
-        <div class="text-right">
-            <h3 class="text-lg font-semibold">Account Details</h3>
-            <p class="text-gray-700">Account No: <span class="font-medium">{{ request.user.account.account_no }}</span></p>
-            <p class="text-gray-700">Balance: <span class="font-medium">{{ request.user.account.balance }}</span></p>
+
+        <!-- Account Details Card -->
+        <div class="bg-gradient-to-br from-green-500 via-teal-500 to-blue-500 shadow-lg rounded-lg p-6 text-white">
+            <h2 class="text-xl font-bold mb-4">Account Details</h2>
+            <p class="mb-2"><strong>Account Number:</strong> {{ request.user.account.account_no }}</p>
+            <p><strong>Current Balance:</strong> BDT {{ request.user.account.balance }}</p>
         </div>
     </div>
 
     <!-- Borrowed Books Section -->
-    <div class="mt-10">
-        <h2 class="text-3xl font-bold mb-4 text-center">Borrowed Book History</h2>
-        <table class="table-auto w-full border-collapse border border-gray-300">
+    <div>
+        <h2 class="text-3xl font-bold mb-6 text-center">Borrowed Book History</h2>
+        <table class="table-auto w-full border-collapse border border-gray-300 bg-white shadow-md rounded-lg overflow-hidden">
             <thead>
-                <tr class="bg-gray-100">
+                <tr class="bg-blue-500 text-white">
                     <th class="border border-gray-300 px-4 py-2">Book ID</th>
                     <th class="border border-gray-300 px-4 py-2">Title</th>
                     <th class="border border-gray-300 px-4 py-2">Price</th>
@@ -36,7 +39,7 @@
             </thead>
             <tbody>
                 {% for borrow in borrows %}
-                <tr>
+                <tr class="hover:bg-gray-100 transition">
                     <td class="border border-gray-300 px-4 py-2">{{ borrow.book.id }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ borrow.book.title }}</td>
                     <td class="border border-gray-300 px-4 py-2">{{ borrow.book.borrowprice }}</td>
@@ -48,12 +51,12 @@
                         {% else %}
                         <form action="{% url 'return_book' borrow.book.id %}" method="POST">
                             {% csrf_token %}
-                            <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded" type="submit">Return</button>
+                            <button class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded transition" type="submit">Return</button>
                         </form>
                         {% endif %}
                     </td>
                     <td class="border border-gray-300 px-4 py-2">
-                        <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Review</a>
+                        <a href="{% url 'review_book' borrow.book.id %}" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded transition">Review</a>
                     </td>
                 </tr>
                 {% endfor %}
