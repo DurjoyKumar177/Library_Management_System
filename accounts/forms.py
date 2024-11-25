@@ -6,8 +6,8 @@ from .constants import GENDER_TYPE
 
 
 class UserRegistrationForm(UserCreationForm):
-    phone_number1 = forms.CharField(max_length=15, required=True, help_text="Primary phone number (unique).")
-    phone_number2 = forms.CharField(max_length=15, required=True, help_text="Secondary phone number (unique).")
+    phone_number1 = forms.CharField(max_length=11, required=True, help_text="Primary phone number (unique).")
+    phone_number2 = forms.CharField(max_length=11, required=True, help_text="Secondary phone number (unique).")
     birth_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     gender = forms.ChoiceField(choices=GENDER_TYPE)
     street_address = forms.CharField(max_length=100)
@@ -22,6 +22,23 @@ class UserRegistrationForm(UserCreationForm):
             'phone_number1', 'phone_number2', 'birth_date', 'gender', 
             'street_address', 'city', 'postal_code', 'country',
         ]
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("A user with this email already exists.")
+        return email
+
+    def clean_phone_number1(self):
+        phone_number1 = self.cleaned_data.get('phone_number1')
+        if UserAccount.objects.filter(phone_number1=phone_number1).exists():
+            raise forms.ValidationError("This primary phone number is already registered.")
+        return phone_number1
+
+    def clean_phone_number2(self):
+        phone_number2 = self.cleaned_data.get('phone_number2')
+        if UserAccount.objects.filter(phone_number2=phone_number2).exists():
+            raise forms.ValidationError("This secondary phone number is already registered.")
+        return phone_number2
         
     def save(self, commit=True):
         our_user = super().save(commit=False)
