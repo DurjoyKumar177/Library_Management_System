@@ -18,16 +18,17 @@
 
         <!-- Mobile Menu Button -->
         <div class="lg:hidden">
-            <button class="text-white hover:text-yellow-400 focus:outline-none">
-                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
-                    <title>Menu</title>
-                    <path d="M4 5h16M4 12h16m-7 7h7" />
+            <button id="menuToggle" class="text-white hover:text-yellow-400 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                    <rect x="4" y="5" width="16" height="2"></rect>
+                    <rect x="4" y="12" width="16" height="2"></rect>
+                    <rect x="4" y="19" width="16" height="2"></rect>
                 </svg>
             </button>
         </div>
 
         <!-- Navbar Links -->
-        <div class="hidden lg:flex items-center space-x-6">
+        <div id="navbarLinks" class="hidden lg:flex flex-col lg:flex-row items-center space-x-6">
             {% if request.user.is_authenticated %}
                 <!-- Authenticated User Links -->
                 <a href="{% url 'deposit' %}" class="hover:text-yellow-400 transition duration-300">Deposit</a>
@@ -65,14 +66,27 @@
     const balanceButton = document.getElementById('balanceButton');
     const balanceDisplay = document.getElementById('balanceDisplay');
 
-    balanceButton.addEventListener('click', () => {
-        balanceButton.classList.add('hidden'); // Hide the button
-        balanceDisplay.classList.remove('hidden'); // Show the balance
+    if (balanceButton) {
+        balanceButton.addEventListener('click', () => {
+            balanceButton.classList.add('hidden'); // Hide the button
+            balanceDisplay.classList.remove('hidden'); // Show the balance
 
-        // After 5 seconds, revert to the button
-        setTimeout(() => {
-            balanceDisplay.classList.add('hidden'); // Hide the balance
-            balanceButton.classList.remove('hidden'); // Show the button
-        }, 5000);
+            // After 5 seconds, revert to the button
+            setTimeout(() => {
+                balanceDisplay.classList.add('hidden'); // Hide the balance
+                balanceButton.classList.remove('hidden'); // Show the button
+            }, 5000);
+        });
+    }
+</script>
+
+<!-- JavaScript for Mobile Menu Toggle -->
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navbarLinks = document.getElementById('navbarLinks');
+
+    menuToggle.addEventListener('click', () => {
+        navbarLinks.classList.toggle('hidden');
+        <!-- menuToggle.classList.add('hidden'); -->
     });
 </script>
